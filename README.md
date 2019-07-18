@@ -6,6 +6,12 @@ npm i github:FlyInk13/VKAppsUtils --save
 ```
 
 ## Frontend:
+### utils/setAndroidTheme - Заменяет тему на android, если в URL есть web=1.
+```jsx
+// Вставлять в index.js
+import "vkappsutils/utils/setAndroidTheme";
+```
+
 ### Args - Выводит параметры location.search.
 ```jsx
 import getArgs from "vkappsutils/dist/Args";
@@ -82,9 +88,9 @@ SetWebTheme(/web=1/.test(location.href)) //  Если нужно установ�
 ```
 
 ## Backend (Node.js)
-### signVerify - Проверяет подпись (sign) приложения
+### utils/signVerify - Проверяет подпись (sign) приложения
 ```js
-const signVerify = require('vkappsutils/dist/signVerify');
+const signVerify = require('vkappsutils/utils/signVerify');
 const url = '...'; // location.url | search;
 const clientSecret = ''; // Защищённый ключ из настроек приложения
 
