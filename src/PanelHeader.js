@@ -1,5 +1,7 @@
 import React from 'react';
-import { PanelHeader, HeaderButton, Alert, Input } from '@vkontakte/vkui';
+import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
+import HeaderButton from '@vkontakte/vkui/dist/components/HeaderButton/HeaderButton';
+
 import Icon24Fullscreen from '@vkontakte/icons/dist/24/fullscreen';
 import Icon24FullscreenExit from '@vkontakte/icons/dist/24/fullscreen_exit';
 import PanelHeaderInternal from "./PanelHeaderInternal";

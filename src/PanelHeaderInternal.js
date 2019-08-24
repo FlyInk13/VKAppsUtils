@@ -1,4 +1,4 @@
-import { PanelHeader } from "@vkontakte/vkui";
+import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
 
 class PanelHeaderInternal extends PanelHeader {
   get webviewType () {

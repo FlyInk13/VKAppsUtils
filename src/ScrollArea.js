@@ -1,5 +1,4 @@
 import React from 'react';
-import { PanelHeader, HeaderButton, Alert, Input } from '@vkontakte/vkui';
 
 class ScrollArea extends React.Component {
   constructor(props) {

@@ -1,5 +1,6 @@
 import React from 'react';
-import { PanelHeader, HeaderButton, Alert, Input } from '@vkontakte/vkui';
+import Alert from '@vkontakte/vkui/dist/components/Alert/Alert';
+import Input from '@vkontakte/vkui/dist/components/Input/Input';
 import connect from '@vkontakte/vkui-connect';
 
 class PromiseAPI {
