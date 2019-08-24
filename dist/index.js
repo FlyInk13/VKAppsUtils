@@ -45,6 +45,12 @@ Object.defineProperty(exports, "SetWebTheme", {
     return _SetWebTheme["default"];
   }
 });
+Object.defineProperty(exports, "ReverseHorizontalScroll", {
+  enumerable: true,
+  get: function get() {
+    return _ReverseHorizontalScroll["default"];
+  }
+});
 
 var _Args = _interopRequireDefault(require("./Args"));
 
@@ -59,6 +65,8 @@ var _PromiseAPI = _interopRequireDefault(require("./PromiseAPI"));
 var _ScrollArea = _interopRequireDefault(require("./ScrollArea"));
 
 var _SetWebTheme = _interopRequireDefault(require("./SetWebTheme"));
+
+var _ReverseHorizontalScroll = _interopRequireDefault(require("./ReverseHorizontalScroll"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 //# sourceMappingURL=index.js.map
