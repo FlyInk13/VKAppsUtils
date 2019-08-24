@@ -7,7 +7,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _vkui = require("@vkontakte/vkui");
+var _PanelHeader = _interopRequireDefault(require("@vkontakte/vkui/dist/components/PanelHeader/PanelHeader"));
+
+var _HeaderButton = _interopRequireDefault(require("@vkontakte/vkui/dist/components/HeaderButton/HeaderButton"));
 
 var _fullscreen = _interopRequireDefault(require("@vkontakte/icons/dist/24/fullscreen"));
 
@@ -96,12 +98,12 @@ function (_React$Component) {
       var props = this.props;
 
       if (!props.isWeb) {
-        return _react["default"].createElement(_vkui.PanelHeader, props);
+        return _react["default"].createElement(_PanelHeader["default"], props);
       }
 
       var newProps = {};
       newProps.theme = 'alternate';
-      newProps.right = _react["default"].createElement(_vkui.HeaderButton, {
+      newProps.right = _react["default"].createElement(_HeaderButton["default"], {
         onClick: function onClick() {
           return _this2.fullScreenToggle();
         }

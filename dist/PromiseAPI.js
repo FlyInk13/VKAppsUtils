@@ -7,7 +7,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _vkui = require("@vkontakte/vkui");
+var _Alert = _interopRequireDefault(require("@vkontakte/vkui/dist/components/Alert/Alert"));
+
+var _Input = _interopRequireDefault(require("@vkontakte/vkui/dist/components/Input/Input"));
 
 var _vkuiConnect = _interopRequireDefault(require("@vkontakte/vkui-connect"));
 
@@ -172,7 +174,7 @@ function () {
       return new Promise(function (resolve) {
         var view = _this3.view;
         view.setState({
-          popout: _react["default"].createElement(_vkui.Alert, {
+          popout: _react["default"].createElement(_Alert["default"], {
             actionsLayout: "vertical",
             actions: [{
               title: 'OK',
@@ -192,7 +194,7 @@ function () {
               borderRadius: 3
             },
             alt: error.captcha_img
-          }), _react["default"].createElement(_vkui.Input, {
+          }), _react["default"].createElement(_Input["default"], {
             defaultValue: "",
             onChange: function onChange(e) {
               var captchaCode = e.currentTarget.value;
