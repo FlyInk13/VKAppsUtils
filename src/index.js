@@ -5,6 +5,7 @@ import PanelHeaderInternal from "./PanelHeaderInternal";
 import PromiseAPI from "./PromiseAPI";
 import ScrollArea from "./ScrollArea";
 import SetWebTheme from "./SetWebTheme";
+import ReverseHorizontalScroll from "./ReverseHorizontalScroll";
 
 
 export {
@@ -15,4 +16,5 @@ export {
   PromiseAPI,
   ScrollArea,
   SetWebTheme,
+  ReverseHorizontalScroll,
 };

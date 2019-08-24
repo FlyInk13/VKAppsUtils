@@ -87,7 +87,7 @@ class PanelHeaderFull extends React.Component {
 
     return (
       <PanelHeaderInternal {...props} {...newProps}/>
-  )
+    );
   }
 }
 

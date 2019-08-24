@@ -12,6 +12,17 @@ npm i github:FlyInk13/VKAppsUtils --save
 import "vkappsutils/utils/setAndroidTheme";
 ```
 
+### ReverseHorizontalScroll - HorizontalScroll с предопределенным вертикальным скроллом.
+```jsx
+import ReverseHorizontalScroll from "vkappsutils/dist/ReverseHorizontalScroll";
+
+<ReverseHorizontalScroll>
+  <div></div>
+  ...
+  <div></div>
+</ReverseHorizontalScroll>
+```
+
 ### Args - Выводит параметры location.search.
 ```jsx
 import getArgs from "vkappsutils/dist/Args";
