@@ -173,6 +173,7 @@ function () {
       this.pause = 1;
       return new Promise(function (resolve) {
         var view = _this3.view;
+        var oldPopout = view.state.popout;
         view.setState({
           popout: _react["default"].createElement(_Alert["default"], {
             actionsLayout: "vertical",
@@ -183,7 +184,7 @@ function () {
             onClose: function onClose() {
               resolve(view.state.captchaCode);
               view.setState({
-                popout: null,
+                popout: oldPopout,
                 captchaCode: null
               });
             }

@@ -67,6 +67,7 @@ class PromiseAPI {
     this.pause = 1;
     return new Promise((resolve) => {
       const view = this.view;
+      const oldPopout = view.state.popout;
       view.setState({
         popout: (
           <Alert
@@ -77,7 +78,7 @@ class PromiseAPI {
           }]}
         onClose={() => {
         resolve(view.state.captchaCode);
-        view.setState({ popout: null, captchaCode: null });
+        view.setState({ popout: oldPopout, captchaCode: null });
       }}
     >
     <h2>Введите код с картинки</h2>
