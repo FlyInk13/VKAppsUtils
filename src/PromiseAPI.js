@@ -1,7 +1,7 @@
 import React from 'react';
 import Alert from '@vkontakte/vkui/dist/components/Alert/Alert';
 import Input from '@vkontakte/vkui/dist/components/Input/Input';
-import connect from '@vkontakte/vkui-connect';
+import connect from '@vkontakte/vk-connect';
 
 class PromiseAPI {
   constructor(token) {

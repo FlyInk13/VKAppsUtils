@@ -11,7 +11,7 @@ var _Alert = _interopRequireDefault(require("@vkontakte/vkui/dist/components/Ale
 
 var _Input = _interopRequireDefault(require("@vkontakte/vkui/dist/components/Input/Input"));
 
-var _vkuiConnect = _interopRequireDefault(require("@vkontakte/vkui-connect"));
+var _vkConnect = _interopRequireDefault(require("@vkontakte/vk-connect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -91,7 +91,7 @@ function () {
       delete _this.requests[request_id];
     });
 
-    this.connect = _vkuiConnect["default"];
+    this.connect = _vkConnect["default"];
     this.requests = {};
     this.access_token = false;
     this.view = false;

@@ -1,6 +1,6 @@
 {
   "name": "vkappsutils",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "VK Mini Apps Utils",
   "author": "Flyink13",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@vkontakte/vk-connect": "^1.5.5",
     "@vkontakte/vkui": "^2.23.1",
     "babel-loader": "^8.0.6",
     "webpack": "^4.36.1",
