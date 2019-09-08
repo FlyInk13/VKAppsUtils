@@ -30,21 +30,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var PromiseAPI =
 /*#__PURE__*/
 function () {
-  function PromiseAPI(token) {
+  function PromiseAPI() {
     var _this = this;
 
     _classCallCheck(this, PromiseAPI);
 
-    _defineProperty(this, "callMethod", function (method, params) {
+    _defineProperty(this, "callMethod", function (method) {
+      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       return new Promise(function (resolve, reject) {
         var request_id = (Math.random() * 1e20).toString(32);
         var data = {
           method: method,
-          params: params,
+          params: _objectSpread({
+            access_token: _this.access_token,
+            v: _this.v
+          }, params),
           request_id: request_id
         };
-        params.access_token = _this.access_token;
-        params.v = _this.v;
         _this.requests[request_id] = {
           resolve: resolve,
           reject: reject,
