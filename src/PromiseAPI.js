@@ -105,13 +105,18 @@ class PromiseAPI {
     return this.callMethod.bind(this, method);
   }
 
-  callMethod = (method, params) => {
+  callMethod = (method, params = {}) => {
     return new Promise((resolve, reject) => {
       const request_id = (Math.random() * 1e20).toString(32);
-      const data = { method, params, request_id };
-
-      params.access_token = this.access_token;
-      params.v = this.v;
+      const data = {
+        method,
+        params: {
+          access_token: this.access_token,
+          v: this.v,
+          ...params,
+        },
+        request_id,
+      };
 
       this.requests[request_id] = {resolve, reject, data};
       this.cartCheck(request_id);
