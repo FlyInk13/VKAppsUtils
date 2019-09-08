@@ -4,7 +4,7 @@ import Input from '@vkontakte/vkui/dist/components/Input/Input';
 import connect from '@vkontakte/vk-connect';
 
 class PromiseAPI {
-  constructor(token) {
+  constructor() {
     this.connect  = connect;
     this.requests = {};
     this.access_token = false;
