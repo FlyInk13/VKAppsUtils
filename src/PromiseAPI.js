@@ -5,15 +5,26 @@ import connect from '@vkontakte/vk-connect';
 
 class PromiseAPI {
   constructor() {
-    this.connect  = connect;
-    this.requests = {};
+    // user data
     this.access_token = false;
     this.view = false;
     this.v = 5.92;
+
+    // requests map { request_id: request_data };
+    this.requests = {};
+    // requests cart [request_id, request_id, ...];
     this.cart = [];
+
+    // internal vars
     this.log = false;
     this.pause = false;
 
+    // connect transport
+    this.subscribe();
+  }
+
+  subscribe() {
+    this.connect = connect;
     this.connect.subscribe((e) => {
       switch (e.detail.type) {
         case 'VKWebAppCallAPIMethodFailed':
@@ -26,6 +37,10 @@ class PromiseAPI {
     });
   }
 
+  sendRequest(request) {
+    this.connect.send('VKWebAppCallAPIMethod', request.data);
+  }
+
   debug(...args) {
     if (!this.log) return;
     console.log(...args);
@@ -34,7 +49,7 @@ class PromiseAPI {
   cartCheck(request_id, ignoreCart) {
     if (!this.pause && (!this.interval || ignoreCart)) {
       const request = this.requests[request_id];
-      this.connect.send('VKWebAppCallAPIMethod', request.data);
+      this.sendRequest(request);
       this.debug('cartCheck', 'call', request);
       return;
     }
