@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _vkuiConnect = _interopRequireDefault(require("@vkontakte/vkui-connect"));
+var _vkConnect = _interopRequireDefault(require("@vkontakte/vk-connect"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -16,7 +16,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
  * @constructor
  */
 function SetWebTheme(isWeb) {
-  _vkuiConnect["default"].subscribe(function (e) {
+  _vkConnect["default"].subscribe(function (e) {
     switch (e.detail.type) {
       case 'VKWebAppUpdateConfig':
         var schemeAttribute = document.createAttribute('scheme');
@@ -30,7 +30,7 @@ function SetWebTheme(isWeb) {
         document.body.attributes.setNamedItem(schemeAttribute);
 
         if (e.detail.data.appearance === 'light') {
-          _vkuiConnect["default"].send("VKWebAppSetViewSettings", {
+          _vkConnect["default"].send("VKWebAppSetViewSettings", {
             status_bar_style: "dark",
             action_bar_color: "#fff"
           });
