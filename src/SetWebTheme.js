@@ -1,4 +1,4 @@
-import connect from '@vkontakte/vkui-connect';
+import connect from '@vkontakte/vk-connect';
 
 /**
  * Обертка над vkui-connect автоматически устанавливающая тему
