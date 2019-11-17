@@ -93,30 +93,47 @@ function () {
       delete _this.requests[request_id];
     });
 
-    this.connect = _vkConnect["default"];
-    this.requests = {};
+    // user data
     this.access_token = false;
     this.view = false;
-    this.v = 5.92;
-    this.cart = [];
+    this.v = 5.92; // requests map { request_id: request_data };
+
+    this.requests = {}; // requests cart [request_id, request_id, ...];
+
+    this.cart = []; // internal vars
+
     this.log = false;
-    this.pause = false;
-    this.connect.subscribe(function (e) {
-      switch (e.detail.type) {
-        case 'VKWebAppCallAPIMethodFailed':
-          _this.parseError(e.detail.data);
+    this.pause = false; // connect transport
 
-          break;
-
-        case 'VKWebAppCallAPIMethodResult':
-          _this.parseResponse(e.detail.data);
-
-          break;
-      }
-    });
+    this.subscribe();
   }
 
   _createClass(PromiseAPI, [{
+    key: "subscribe",
+    value: function subscribe() {
+      var _this2 = this;
+
+      this.connect = _vkConnect["default"];
+      this.connect.subscribe(function (e) {
+        switch (e.detail.type) {
+          case 'VKWebAppCallAPIMethodFailed':
+            _this2.parseError(e.detail.data);
+
+            break;
+
+          case 'VKWebAppCallAPIMethodResult':
+            _this2.parseResponse(e.detail.data);
+
+            break;
+        }
+      });
+    }
+  }, {
+    key: "sendRequest",
+    value: function sendRequest(request) {
+      this.connect.send('VKWebAppCallAPIMethod', request.data);
+    }
+  }, {
     key: "debug",
     value: function debug() {
       var _console;
@@ -130,7 +147,7 @@ function () {
     value: function cartCheck(request_id, ignoreCart) {
       if (!this.pause && (!this.interval || ignoreCart)) {
         var request = this.requests[request_id];
-        this.connect.send('VKWebAppCallAPIMethod', request.data);
+        this.sendRequest(request);
         this.debug('cartCheck', 'call', request);
         return;
       }
@@ -155,18 +172,18 @@ function () {
   }, {
     key: "cartInit",
     value: function cartInit() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.debug('cartInit');
       if (this.interval) return;
       this.interval = setInterval(function () {
-        return _this2.cartTick();
+        return _this3.cartTick();
       }, 334);
     }
   }, {
     key: "showCaptcha",
     value: function showCaptcha(method, params, error) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (!this.view) {
         throw error;
@@ -174,7 +191,7 @@ function () {
 
       this.pause = 1;
       return new Promise(function (resolve) {
-        var view = _this3.view;
+        var view = _this4.view;
         var oldPopout = view.state.popout;
         view.setState({
           popout: _react["default"].createElement(_Alert["default"], {
@@ -208,9 +225,9 @@ function () {
           }))
         });
       }).then(function (captcha_key) {
-        _this3.pause = 0;
+        _this4.pause = 0;
         var captcha_sid = error.captcha_sid;
-        return _this3.callMethod(method, _objectSpread({}, params, {
+        return _this4.callMethod(method, _objectSpread({}, params, {
           captcha_key: captcha_key,
           captcha_sid: captcha_sid
         }));
