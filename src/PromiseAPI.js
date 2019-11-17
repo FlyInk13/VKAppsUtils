@@ -86,25 +86,27 @@ class PromiseAPI {
       view.setState({
         popout: (
           <Alert
-        actionsLayout="vertical"
-        actions={[{
-            title: 'OK',
-            autoclose: true,
-          }]}
-        onClose={() => {
-        resolve(view.state.captchaCode);
-        view.setState({ popout: oldPopout, captchaCode: null });
-      }}
-    >
-    <h2>Введите код с картинки</h2>
-      <img src={error.captcha_img} style={{ width: 238, borderRadius: 3 }} alt={error.captcha_img} />
-      <Input defaultValue='' onChange={(e) => {
-        const captchaCode = e.currentTarget.value;
-        view.setState({ captchaCode });
-      }}/>
-      </Alert>
-    )
-    });
+            actionsLayout="vertical"
+            actions={[
+              {
+                title: 'OK',
+                autoclose: true,
+              }
+            ]}
+            onClose={() => {
+              resolve(view.state.captchaCode);
+              view.setState({ popout: oldPopout, captchaCode: null });
+            }}
+          >
+            <h2>Введите код с картинки</h2>
+            <img src={error.captcha_img} style={{ width: 238, borderRadius: 3 }} alt={error.captcha_img}/>
+            <Input defaultValue='' onChange={(e) => {
+              const captchaCode = e.currentTarget.value;
+              view.setState({ captchaCode });
+            }}/>
+          </Alert>
+        )
+      });
     }).then((captcha_key) => {
       this.pause = 0;
       const captcha_sid = error.captcha_sid;
@@ -133,7 +135,7 @@ class PromiseAPI {
         request_id,
       };
 
-      this.requests[request_id] = {resolve, reject, data};
+      this.requests[request_id] = { resolve, reject, data };
       this.cartCheck(request_id);
     }).catch((error) => {
       error = error || {};
@@ -153,14 +155,14 @@ class PromiseAPI {
   };
 
   parseError = (data) => {
-    const {error_data, request_id} = data;
+    const { error_data, request_id } = data;
     if (!this.requests[request_id]) return;
     this.requests[request_id].reject(error_data);
     delete this.requests[request_id];
   };
 
   parseResponse = (data) => {
-    const {response, request_id} = data;
+    const { response, request_id } = data;
     if (!this.requests[request_id]) return;
     this.requests[request_id].resolve(response);
     delete this.requests[request_id];
