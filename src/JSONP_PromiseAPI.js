@@ -2,11 +2,11 @@ import { Input, Alert } from '@vkontakte/vkui';
 import React from "react";
 
 class JSONP_PromiseAPI {
-  constructor() {
+  constructor(data) {
     // user data
-    this.access_token = false;
-    this.view = false;
-    this.v = 5.92;
+    this.access_token = (data ? data.access_token : false) || false;
+    this.view = (data ? data.view : false) || false;
+    this.v = (data ? data.v : false) || '5.92';
 
     // requests map { request_id: request_data };
     this.requests = {};

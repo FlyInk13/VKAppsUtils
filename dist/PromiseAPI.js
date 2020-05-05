@@ -30,7 +30,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var PromiseAPI =
 /*#__PURE__*/
 function () {
-  function PromiseAPI() {
+  function PromiseAPI(_data) {
     var _this = this;
 
     _classCallCheck(this, PromiseAPI);
@@ -94,9 +94,9 @@ function () {
     });
 
     // user data
-    this.access_token = false;
-    this.view = false;
-    this.v = 5.92; // requests map { request_id: request_data };
+    this.access_token = (_data ? _data.access_token : false) || false;
+    this.view = (_data ? _data.view : false) || false;
+    this.v = (_data ? _data.v : false) || '5.92'; // requests map { request_id: request_data };
 
     this.requests = {}; // requests cart [request_id, request_id, ...];
 
