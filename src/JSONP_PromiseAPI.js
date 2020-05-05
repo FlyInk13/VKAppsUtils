@@ -1,9 +1,7 @@
-import React from 'react';
-import Alert from '@vkontakte/vkui/dist/components/Alert/Alert';
-import Input from '@vkontakte/vkui/dist/components/Input/Input';
-import bridge from "@vkontakte/vk-bridge";
+import { Input, Alert } from '@vkontakte/vkui';
+import React from "react";
 
-class PromiseAPI {
+class JSONP_PromiseAPI {
   constructor() {
     // user data
     this.access_token = false;
@@ -19,26 +17,12 @@ class PromiseAPI {
     this.log = false;
     this.pause = false;
 
-    // bridge transport
+    // connect transport
     this.subscribe();
   }
 
   subscribe() {
-    this.bridge = bridge;
-    this.bridge.subscribe(({ detail: { type, data }}) => {
-      switch (type) {
-        case 'VKWebAppCallAPIMethodFailed':
-          this.parseError(data);
-          break;
-        case 'VKWebAppCallAPIMethodResult':
-          this.parseResponse(data);
-          break;
-      }
-    });
-  }
-
-  sendRequest(request) {
-    this.bridge.send('VKWebAppCallAPIMethod', request.data);
+    window.apiCallback = window.apiCallback || {};
   }
 
   debug(...args) {
@@ -83,6 +67,7 @@ class PromiseAPI {
     return new Promise((resolve) => {
       const view = this.view;
       const oldPopout = view.state.popout;
+      const { captcha_img } = error;
       view.setState({
         popout: (
           <Alert
@@ -99,7 +84,7 @@ class PromiseAPI {
             }}
           >
             <h2>Введите код с картинки</h2>
-            <img src={error.captcha_img} style={{ width: 238, borderRadius: 3 }} alt={error.captcha_img}/>
+            <img src={captcha_img} style={{ width: 238, borderRadius: 3 }} alt={captcha_img}/>
             <Input defaultValue='' onChange={(e) => {
               const captchaCode = e.currentTarget.value;
               view.setState({ captchaCode });
@@ -116,10 +101,6 @@ class PromiseAPI {
         captcha_sid,
       });
     });
-  }
-
-  getMethod(method) {
-    return this.callMethod.bind(this, method);
   }
 
   callMethod = (method, params = {}) => {
@@ -148,9 +129,9 @@ class PromiseAPI {
           return this.callMethod(method, params);
         case 14:
           return this.showCaptcha(method, params, apiError);
+        default:
+          throw apiError;
       }
-
-      throw apiError;
     });
   };
 
@@ -167,6 +148,46 @@ class PromiseAPI {
     this.requests[request_id].resolve(response);
     delete this.requests[request_id];
   };
+
+  callback(request_id, callback_name, { error: error_data, response }) {
+    if (error_data) {
+      this.parseError({ error_data, request_id });
+    } else {
+      this.parseResponse({ response, request_id });
+    }
+
+    document.getElementById(callback_name).outerHTML = '';
+    delete window.apiCallback[callback_name];
+  }
+
+  sendJSON(callback_name, method, params) {
+    const script = document.createElement('script');
+    let src = 'https://api.vk.com/method/' + method + '/?';
+
+    params.callback = 'apiCallback.' + callback_name;
+
+    Object.entries(params).forEach(([key, value]) => {
+      value = encodeURIComponent(String(value));
+      src += `&${key}=${value}`;
+    });
+
+    script.id = callback_name;
+    script.src = src;
+
+    script.onerror = (error) => {
+      window.apiCallback[callback_name]({ error });
+    };
+
+    document.head.appendChild(script);
+  }
+
+  sendRequest({ data: { method, params, request_id }}) {
+    const callback_name  = 'fn' + request_id.replace('.', '_');
+
+    window.apiCallback[callback_name] = this.callback.bind(this, request_id, callback_name);
+
+    this.sendJSON(callback_name, method, params);
+  }
 }
 
-export default PromiseAPI;
+export default JSONP_PromiseAPI;

@@ -47,6 +47,7 @@ import PanelHeaderInternal from "vkappsutils/dist/PanelHeaderInternal";
 ```
 
 ### PromiseAPI - Модуль для работы с API с поддержкой очереди и ввода кода с картинки
+### JSONP_PromiseAPI - Модуль для работы с API через JSONP
 ```jsx
 import PromiseAPI from "vkappsutils/dist/PromiseAPI";
 

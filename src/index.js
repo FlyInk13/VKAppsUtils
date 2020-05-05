@@ -6,7 +6,7 @@ import PromiseAPI from "./PromiseAPI";
 import ScrollArea from "./ScrollArea";
 import SetWebTheme from "./SetWebTheme";
 import ReverseHorizontalScroll from "./ReverseHorizontalScroll";
-
+import JSONP_PromiseAPI from "./JSONP_PromiseAPI";
 
 export {
   getArgs,
@@ -17,4 +17,5 @@ export {
   ScrollArea,
   SetWebTheme,
   ReverseHorizontalScroll,
+  JSONP_PromiseAPI,
 };

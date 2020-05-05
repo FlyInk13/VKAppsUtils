@@ -16,8 +16,8 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "@vkontakte/vk-connect": "^1.5.5",
-    "@vkontakte/vkui": "^2.23.1",
+    "@vkontakte/vk-bridge": "^2.2.0",
+    "@vkontakte/vkui": "^3.8.2",
     "babel-loader": "^8.0.6",
     "webpack": "^4.36.1",
     "webpack-cli": "^3.3.6"
