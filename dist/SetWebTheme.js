@@ -5,32 +5,36 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _vkConnect = _interopRequireDefault(require("@vkontakte/vk-connect"));
+var _vkBridge = _interopRequireDefault(require("@vkontakte/vk-bridge"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
- * Обертка над vkui-connect автоматически устанавливающая тему
+ * Обертка над vk-bridge автоматически устанавливающая тему
  *
  * @param isWeb - Если нужно установить тему bright_light
  * @constructor
  */
 function SetWebTheme(isWeb) {
-  _vkConnect["default"].subscribe(function (e) {
-    switch (e.detail.type) {
+  _vkBridge["default"].subscribe(function (_ref) {
+    var _ref$detail = _ref.detail,
+        type = _ref$detail.type,
+        data = _ref$detail.data;
+
+    switch (type) {
       case 'VKWebAppUpdateConfig':
         var schemeAttribute = document.createAttribute('scheme');
 
         if (isWeb) {
           schemeAttribute.value = 'bright_light';
         } else {
-          schemeAttribute.value = e.detail.data.scheme ? e.detail.data.scheme : 'bright_light';
+          schemeAttribute.value = data.scheme ? data.scheme : 'bright_light';
         }
 
         document.body.attributes.setNamedItem(schemeAttribute);
 
-        if (e.detail.data.appearance === 'light') {
-          _vkConnect["default"].send("VKWebAppSetViewSettings", {
+        if (data.appearance === 'light') {
+          _vkBridge["default"].send("VKWebAppSetViewSettings", {
             status_bar_style: "dark",
             action_bar_color: "#fff"
           });

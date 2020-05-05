@@ -51,6 +51,12 @@ Object.defineProperty(exports, "ReverseHorizontalScroll", {
     return _ReverseHorizontalScroll["default"];
   }
 });
+Object.defineProperty(exports, "JSONP_PromiseAPI", {
+  enumerable: true,
+  get: function get() {
+    return _JSONP_PromiseAPI["default"];
+  }
+});
 
 var _Args = _interopRequireDefault(require("./Args"));
 
@@ -67,6 +73,8 @@ var _ScrollArea = _interopRequireDefault(require("./ScrollArea"));
 var _SetWebTheme = _interopRequireDefault(require("./SetWebTheme"));
 
 var _ReverseHorizontalScroll = _interopRequireDefault(require("./ReverseHorizontalScroll"));
+
+var _JSONP_PromiseAPI = _interopRequireDefault(require("./JSONP_PromiseAPI"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 //# sourceMappingURL=index.js.map

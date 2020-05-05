@@ -5,15 +5,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _vkui = require("@vkontakte/vkui");
+
 var _react = _interopRequireDefault(require("react"));
 
-var _Alert = _interopRequireDefault(require("@vkontakte/vkui/dist/components/Alert/Alert"));
-
-var _Input = _interopRequireDefault(require("@vkontakte/vkui/dist/components/Input/Input"));
-
-var _vkBridge = _interopRequireDefault(require("@vkontakte/vk-bridge"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -27,13 +31,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var PromiseAPI =
+var JSONP_PromiseAPI =
 /*#__PURE__*/
 function () {
-  function PromiseAPI() {
+  function JSONP_PromiseAPI() {
     var _this = this;
 
-    _classCallCheck(this, PromiseAPI);
+    _classCallCheck(this, JSONP_PromiseAPI);
 
     _defineProperty(this, "callMethod", function (method) {
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -67,9 +71,10 @@ function () {
 
           case 14:
             return _this.showCaptcha(method, params, apiError);
-        }
 
-        throw apiError;
+          default:
+            throw apiError;
+        }
       });
     });
 
@@ -103,39 +108,15 @@ function () {
     this.cart = []; // internal vars
 
     this.log = false;
-    this.pause = false; // bridge transport
+    this.pause = false; // connect transport
 
     this.subscribe();
   }
 
-  _createClass(PromiseAPI, [{
+  _createClass(JSONP_PromiseAPI, [{
     key: "subscribe",
     value: function subscribe() {
-      var _this2 = this;
-
-      this.bridge = _vkBridge["default"];
-      this.bridge.subscribe(function (_ref) {
-        var _ref$detail = _ref.detail,
-            type = _ref$detail.type,
-            data = _ref$detail.data;
-
-        switch (type) {
-          case 'VKWebAppCallAPIMethodFailed':
-            _this2.parseError(data);
-
-            break;
-
-          case 'VKWebAppCallAPIMethodResult':
-            _this2.parseResponse(data);
-
-            break;
-        }
-      });
-    }
-  }, {
-    key: "sendRequest",
-    value: function sendRequest(request) {
-      this.bridge.send('VKWebAppCallAPIMethod', request.data);
+      window.apiCallback = window.apiCallback || {};
     }
   }, {
     key: "debug",
@@ -176,18 +157,18 @@ function () {
   }, {
     key: "cartInit",
     value: function cartInit() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.debug('cartInit');
       if (this.interval) return;
       this.interval = setInterval(function () {
-        return _this3.cartTick();
+        return _this2.cartTick();
       }, 334);
     }
   }, {
     key: "showCaptcha",
     value: function showCaptcha(method, params, error) {
-      var _this4 = this;
+      var _this3 = this;
 
       if (!this.view) {
         throw error;
@@ -195,10 +176,11 @@ function () {
 
       this.pause = 1;
       return new Promise(function (resolve) {
-        var view = _this4.view;
+        var view = _this3.view;
         var oldPopout = view.state.popout;
+        var captcha_img = error.captcha_img;
         view.setState({
-          popout: _react["default"].createElement(_Alert["default"], {
+          popout: _react["default"].createElement(_vkui.Alert, {
             actionsLayout: "vertical",
             actions: [{
               title: 'OK',
@@ -212,13 +194,13 @@ function () {
               });
             }
           }, _react["default"].createElement("h2", null, "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043A\u043E\u0434 \u0441 \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0438"), _react["default"].createElement("img", {
-            src: error.captcha_img,
+            src: captcha_img,
             style: {
               width: 238,
               borderRadius: 3
             },
-            alt: error.captcha_img
-          }), _react["default"].createElement(_Input["default"], {
+            alt: captcha_img
+          }), _react["default"].createElement(_vkui.Input, {
             defaultValue: "",
             onChange: function onChange(e) {
               var captchaCode = e.currentTarget.value;
@@ -229,24 +211,76 @@ function () {
           }))
         });
       }).then(function (captcha_key) {
-        _this4.pause = 0;
+        _this3.pause = 0;
         var captcha_sid = error.captcha_sid;
-        return _this4.callMethod(method, _objectSpread({}, params, {
+        return _this3.callMethod(method, _objectSpread({}, params, {
           captcha_key: captcha_key,
           captcha_sid: captcha_sid
         }));
       });
     }
   }, {
-    key: "getMethod",
-    value: function getMethod(method) {
-      return this.callMethod.bind(this, method);
+    key: "callback",
+    value: function callback(request_id, callback_name, _ref) {
+      var error_data = _ref.error,
+          response = _ref.response;
+
+      if (error_data) {
+        this.parseError({
+          error_data: error_data,
+          request_id: request_id
+        });
+      } else {
+        this.parseResponse({
+          response: response,
+          request_id: request_id
+        });
+      }
+
+      document.getElementById(callback_name).outerHTML = '';
+      delete window.apiCallback[callback_name];
+    }
+  }, {
+    key: "sendJSON",
+    value: function sendJSON(callback_name, method, params) {
+      var script = document.createElement('script');
+      var src = 'https://api.vk.com/method/' + method + '/?';
+      params.callback = 'apiCallback.' + callback_name;
+      Object.entries(params).forEach(function (_ref2) {
+        var _ref3 = _slicedToArray(_ref2, 2),
+            key = _ref3[0],
+            value = _ref3[1];
+
+        value = encodeURIComponent(String(value));
+        src += "&".concat(key, "=").concat(value);
+      });
+      script.id = callback_name;
+      script.src = src;
+
+      script.onerror = function (error) {
+        window.apiCallback[callback_name]({
+          error: error
+        });
+      };
+
+      document.head.appendChild(script);
+    }
+  }, {
+    key: "sendRequest",
+    value: function sendRequest(_ref4) {
+      var _ref4$data = _ref4.data,
+          method = _ref4$data.method,
+          params = _ref4$data.params,
+          request_id = _ref4$data.request_id;
+      var callback_name = 'fn' + request_id.replace('.', '_');
+      window.apiCallback[callback_name] = this.callback.bind(this, request_id, callback_name);
+      this.sendJSON(callback_name, method, params);
     }
   }]);
 
-  return PromiseAPI;
+  return JSONP_PromiseAPI;
 }();
 
-var _default = PromiseAPI;
+var _default = JSONP_PromiseAPI;
 exports["default"] = _default;
-//# sourceMappingURL=PromiseAPI.js.map
+//# sourceMappingURL=JSONP_PromiseAPI.js.map
