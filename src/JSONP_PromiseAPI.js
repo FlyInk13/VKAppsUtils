@@ -120,7 +120,7 @@ class JSONP_PromiseAPI {
       this.cartCheck(request_id);
     }).catch((error) => {
       error = error || {};
-      const apiError = error.error_reason || error;
+      const apiError = (typeof error.error_reason == 'object' ? error.error_reason : error.error_data) || error;
       const errorCode = apiError.error_code || 0;
 
       switch (errorCode) {
