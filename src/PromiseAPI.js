@@ -9,6 +9,7 @@ class PromiseAPI {
     this.access_token = (data ? data.access_token : false) || false;
     this.view = (data ? data.view : false) || false;
     this.v = (data ? data.v : false) || '5.92';
+    this.reject_execute_errors = !!data.reject_execute_errors;
 
     // requests map { request_id: request_data };
     this.requests = {};
@@ -162,9 +163,17 @@ class PromiseAPI {
   };
 
   parseResponse = (data) => {
-    const { response, request_id } = data;
+    const { response, execute_errors, request_id } = data;
     if (!this.requests[request_id]) return;
-    this.requests[request_id].resolve(response);
+
+    if (execute_errors && this.reject_execute_errors) {
+      const error = execute_errors[0];
+      error.data = data;
+      this.requests[request_id].reject(error);
+    } else {
+      this.requests[request_id].resolve(response);
+    }
+
     delete this.requests[request_id];
   };
 }

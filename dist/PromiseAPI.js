@@ -15,9 +15,11 @@ var _vkBridge = _interopRequireDefault(require("@vkontakte/vk-bridge"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27,9 +29,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var PromiseAPI =
-/*#__PURE__*/
-function () {
+var PromiseAPI = /*#__PURE__*/function () {
   function PromiseAPI(_data) {
     var _this = this;
 
@@ -56,7 +56,7 @@ function () {
         _this.cartCheck(request_id);
       })["catch"](function (error) {
         error = error || {};
-        var apiError = error.error_reason || error;
+        var apiError = (_typeof(error.error_reason) == 'object' ? error.error_reason : error.error_data) || error;
         var errorCode = apiError.error_code || 0;
 
         switch (errorCode) {
@@ -85,10 +85,18 @@ function () {
 
     _defineProperty(this, "parseResponse", function (data) {
       var response = data.response,
+          execute_errors = data.execute_errors,
           request_id = data.request_id;
       if (!_this.requests[request_id]) return;
 
-      _this.requests[request_id].resolve(response);
+      if (execute_errors && _this.reject_execute_errors) {
+        var error = execute_errors[0];
+        error.data = data;
+
+        _this.requests[request_id].reject(error);
+      } else {
+        _this.requests[request_id].resolve(response);
+      }
 
       delete _this.requests[request_id];
     });
@@ -96,7 +104,8 @@ function () {
     // user data
     this.access_token = (_data ? _data.access_token : false) || false;
     this.view = (_data ? _data.view : false) || false;
-    this.v = (_data ? _data.v : false) || '5.92'; // requests map { request_id: request_data };
+    this.v = (_data ? _data.v : false) || '5.92';
+    this.reject_execute_errors = !!_data.reject_execute_errors; // requests map { request_id: request_data };
 
     this.requests = {}; // requests cart [request_id, request_id, ...];
 
@@ -198,7 +207,7 @@ function () {
         var view = _this4.view;
         var oldPopout = view.state.popout;
         view.setState({
-          popout: _react["default"].createElement(_Alert["default"], {
+          popout: /*#__PURE__*/_react["default"].createElement(_Alert["default"], {
             actionsLayout: "vertical",
             actions: [{
               title: 'OK',
@@ -211,14 +220,14 @@ function () {
                 captchaCode: null
               });
             }
-          }, _react["default"].createElement("h2", null, "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043A\u043E\u0434 \u0441 \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0438"), _react["default"].createElement("img", {
+          }, /*#__PURE__*/_react["default"].createElement("h2", null, "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043A\u043E\u0434 \u0441 \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0438"), /*#__PURE__*/_react["default"].createElement("img", {
             src: error.captcha_img,
             style: {
               width: 238,
               borderRadius: 3
             },
             alt: error.captcha_img
-          }), _react["default"].createElement(_Input["default"], {
+          }), /*#__PURE__*/_react["default"].createElement(_Input["default"], {
             defaultValue: "",
             onChange: function onChange(e) {
               var captchaCode = e.currentTarget.value;
@@ -231,7 +240,7 @@ function () {
       }).then(function (captcha_key) {
         _this4.pause = 0;
         var captcha_sid = error.captcha_sid;
-        return _this4.callMethod(method, _objectSpread({}, params, {
+        return _this4.callMethod(method, _objectSpread(_objectSpread({}, params), {}, {
           captcha_key: captcha_key,
           captcha_sid: captcha_sid
         }));

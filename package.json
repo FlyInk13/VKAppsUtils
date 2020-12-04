@@ -1,6 +1,6 @@
 {
   "name": "vkappsutils",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "VK Mini Apps Utils",
   "author": "Flyink13",
   "license": "ISC",
@@ -10,16 +10,16 @@
     "clear": "rm -rf dist/*"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-react": "^7.0.0",
-    "@vkontakte/vk-bridge": "^2.2.0",
-    "@vkontakte/vkui": "^3.8.2",
+    "@vkontakte/vk-bridge": "^2.3.0",
+    "@vkontakte/vkui": "^3.13.2",
+    "@babel/cli": "latest",
+    "@babel/core": "latest",
+    "@babel/plugin-proposal-class-properties": "latest",
+    "@babel/plugin-proposal-object-rest-spread": "latest",
+    "@babel/preset-env": "latest",
+    "@babel/preset-react": "latest",
     "babel-loader": "^8.0.6",
-    "webpack": "^4.36.1",
-    "webpack-cli": "^3.3.6"
+    "webpack": "latest",
+    "webpack-cli": "latest"
   }
 }
